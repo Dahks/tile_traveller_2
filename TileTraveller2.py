@@ -1,8 +1,13 @@
+import random
+
 # Constants
 NORTH = "n"
 EAST = "e"
 SOUTH = "s"
 WEST = "w"
+
+YES = "y"
+NO = "n"
 
 
 def has_won(col, row):
@@ -36,7 +41,9 @@ def find_directions(col, row):
 def pull_lever_for_coin():
     # Ask if player want to pull lever
     PROMPT = "Pull a lever (y/n): "
-    answer = input(PROMPT)
+    print(PROMPT, end="")
+    answer = random.choice([YES, NO])
+    print(answer)
     if answer.lower() == "y":
         return 1
     return 0
@@ -84,8 +91,9 @@ def play_one_move(col, row, valid_directions, wallet):
 
     Return whether victory has been obtained, and updated col, row.
     """
-
-    direction = input("Direction: ")
+    print("Direction: ", end="")
+    direction = random.choice([NORTH, EAST, SOUTH, WEST])
+    print(direction)
     direction = direction.lower()
 
     if direction in valid_directions:
@@ -112,16 +120,24 @@ def move(direction, col, row):
 
 def play_tile_traveller():
     # The main program starts here
+    initialize() # set seed
     row = 1
     col = 1
     wallet = int()
+    move_counter = 0
 
     while not has_won(col, row):
         valid_directions = find_directions(col, row)
         print_directions(valid_directions)
         col, row, wallet = play_one_move(col, row, valid_directions, wallet)
+        move_counter += 1
 
-    print(f"Victory! Total coins {wallet}.")
+    print(f"Victory! Total coins {wallet}. Moves {move_counter}.")
+
+# Randomness implementation
+def initialize() -> None:
+    the_seed = int(input("Input seed: "))
+    random.seed(the_seed)
 
 def main():
     PROMPT = "Play again (y/n): "
