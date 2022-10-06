@@ -124,7 +124,7 @@ def play_tile_traveller():
     print(f"Victory! Total coins {wallet}.")
 
 def main():
-    PROMPT = "Play again? (y/n): "
+    PROMPT = "Play again (y/n): "
     play = True
     while play:
         play_tile_traveller()
