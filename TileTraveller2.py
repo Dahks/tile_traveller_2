@@ -16,22 +16,45 @@ def find_directions(col, row):
 
     if col == 1 and row == 1:  # (1,1)
         valid_directions = NORTH
-    elif col == 1 and row == 2:  # (1,2)
+    elif col == 1 and row == 2:  # (1,2) --> pull lever?
         valid_directions = NORTH + EAST + SOUTH
     elif col == 1 and row == 3:  # (1,3)
         valid_directions = EAST + SOUTH
     elif col == 2 and row == 1:  # (2,1)
         valid_directions = NORTH
-    elif col == 2 and row == 2:  # (2,2)
+    elif col == 2 and row == 2:  # (2,2) --> pull lever?
         valid_directions = SOUTH + WEST
-    elif col == 2 and row == 3:  # (2,3)
+    elif col == 2 and row == 3:  # (2,3) --> pull lever?
         valid_directions = EAST + WEST
-    elif col == 3 and row == 2:  # (3,2)
+    elif col == 3 and row == 2:  # (3,2) --> pull lever?
         valid_directions = NORTH + SOUTH
     elif col == 3 and row == 3:  # (3,3)
         valid_directions = SOUTH + WEST
 
     return valid_directions
+
+def pull_lever_for_coin():
+    # Ask if player want to pull lever
+    PROMPT = "Pull a lever (y/n): "
+    answer = input(PROMPT)
+    if answer.lower() == "y":
+        return 1
+    return 0
+
+def is_on_lever_tile(col, row, wallet):
+    coin = 0
+    if col == 1 and row == 2:
+        coin = pull_lever_for_coin()
+    elif col == 2 and row == 2:  # (2,2) --> pull lever?
+        coin = pull_lever_for_coin()
+    elif col == 2 and row == 3:  # (2,3) --> pull lever?
+        coin = pull_lever_for_coin()
+    elif col == 3 and row == 2:  # (3,2) --> pull lever?
+        coin = pull_lever_for_coin()
+
+    if coin:
+        print(f"You received 1 coin, your total is now {wallet + coin}.")
+    return coin
 
 
 def print_directions(directions_str):
@@ -86,14 +109,48 @@ def move(direction, col, row):
         col -= 1
     return (col, row)
 
+def main():
+    # The main program starts here
+    row = 1
+    col = 1
+    wallet = int()
 
-# The main program starts here
-row = 1
-col = 1
+    while not has_won(col, row):
+        wallet += is_on_lever_tile(col, row, wallet)
+        valid_directions = find_directions(col, row)
+        print_directions(valid_directions)
+        col, row = play_one_move(col, row, valid_directions)
 
-while not has_won(col, row):
-    valid_directions = find_directions(col, row)
-    print_directions(valid_directions)
-    col, row = play_one_move(col, row, valid_directions)
+    print(f"Victory! Total coins {wallet}.")
 
-print("Victory!")
+if __name__ == "__main__":
+    main()
+
+'''
+You can travel: (N)orth.
+Direction: s
+Not a valid direction!
+You can travel: (N)orth.
+Direction: n
+Pull a lever (y/n): y
+You received 1 coin, your total is now 1.
+You can travel: (N)orth or (E)ast or (S)outh.
+Direction: N
+You can travel: (E)ast or (S)outh.
+Direction: w
+Not a valid direction!
+You can travel: (E)ast or (S)outh.
+Direction: E
+Pull a lever (y/n): n
+You can travel: (E)ast or (W)est.
+Direction: e
+You can travel: (S)outh or (W)est.
+Direction: s
+Pull a lever (y/n): y
+You received 1 coin, your total is now 2.
+You can travel: (N)orth or (S)outh.
+Direction: S
+Victory! Total coins 2.
+
+
+'''
