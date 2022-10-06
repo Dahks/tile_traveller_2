@@ -79,7 +79,7 @@ def print_directions(directions_str):
     print(".")
 
 
-def play_one_move(col, row, valid_directions):
+def play_one_move(col, row, valid_directions, wallet):
     """Plays one move of the game.
 
     Return whether victory has been obtained, and updated col, row.
@@ -90,10 +90,11 @@ def play_one_move(col, row, valid_directions):
 
     if direction in valid_directions:
         col, row = move(direction, col, row)
+        wallet += is_on_lever_tile(col, row, wallet)
     else:
         print("Not a valid direction!")
 
-    return col, row
+    return col, row, wallet
 
 
 def move(direction, col, row):
@@ -116,10 +117,9 @@ def main():
     wallet = int()
 
     while not has_won(col, row):
-        wallet += is_on_lever_tile(col, row, wallet)
         valid_directions = find_directions(col, row)
         print_directions(valid_directions)
-        col, row = play_one_move(col, row, valid_directions)
+        col, row, wallet = play_one_move(col, row, valid_directions, wallet)
 
     print(f"Victory! Total coins {wallet}.")
 
