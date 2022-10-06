@@ -110,7 +110,7 @@ def move(direction, col, row):
         col -= 1
     return (col, row)
 
-def main():
+def play_tile_traveller():
     # The main program starts here
     row = 1
     col = 1
@@ -122,6 +122,15 @@ def main():
         col, row, wallet = play_one_move(col, row, valid_directions, wallet)
 
     print(f"Victory! Total coins {wallet}.")
+
+def main():
+    PROMPT = "Play again? (y/n): "
+    play = True
+    while play:
+        play_tile_traveller()
+        if not input(PROMPT).lower() == "y":
+            play = False
+
 
 if __name__ == "__main__":
     main()
