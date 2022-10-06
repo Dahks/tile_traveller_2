@@ -120,7 +120,6 @@ def move(direction, col, row):
 
 def play_tile_traveller():
     # The main program starts here
-    initialize() # set seed
     row = 1
     col = 1
     wallet = int()
@@ -140,6 +139,7 @@ def initialize() -> None:
     random.seed(the_seed)
 
 def main():
+    initialize() # set seed
     PROMPT = "Play again (y/n): "
     play = True
     while play:
